@@ -15,10 +15,10 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
     it('verifica o título da aplicação', function() {
         cy.title().should('eq', 'Central de Atendimento ao Cliente TAT')
-  
+        
     })
     
-    //Exercicio extra 1
+    //02 - Exercicio extra 1
     it('Digitando em campos e clicando em elementos', () => {
         const LongText = "Teste teste teste teste teste teste teste testeteste teste teste teste teste teste teste "
         cy.get('#firstName').type('Sergio')
@@ -49,6 +49,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
     })
     //Exercicio extra 4
+    //05 - Exercicio extra 1
     it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário',()=>{
         cy.get('#phone-checkbox').check()
         cy.get('.phone-label-span')
@@ -95,7 +96,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('.success').should('contain', 'Mensagem enviada com sucesso.')
         
     })
-    //Exercicio
+    //03 - Exercicio
     it('seleciona um produto (YouTube) por seu texto',()=>{
         cy.get('#product')
         .select('youtube')
@@ -105,16 +106,90 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     //Exercicio extra 1
     it('seleciona um produto (Mentoria) por seu valor (value)',()=>{
         cy.get('#product')
-        .select('Mentoria')
+        .select('mentoria')
         .should('have.value', 'mentoria')
 
     })
     //Exercicio extra 2
-    it.only('seleciona um produto (Blog) por seu índice',()=>{
+    it('seleciona um produto (Blog) por seu índice',()=>{
         cy.get('#product')
         .select(1)
         .should('have.value', 'blog')
 
     })
+    //04 - Exercicio
+    it('marca o tipo de atendimento "Feedback',()=>{
+        cy.get('[value="feedback"]').check().should('be.checked')
+        
+    })
+    //04 - Exercicio extra
+    it('marca cada tipo de atendimento',()=>{
+        cy.get('[type="radio"]')
+         .should('have.length', 3)
+         //assim percorre cada elemento $ parametro jquery EX: $radio
+         .each(function($radio){
+            cy.wrap($radio).check()
+            cy.wrap($radio).should('be.checked')
+         })
+         //flega um por um.
+        //cy.get('[value="feedback"]').check().should('be.checked')
+        //cy.get('[value="ajuda"]').check().should('be.checked')
+        //cy.get('[value="elogio"]').check().should('be.checked')
+        
+    })
+    //05 - Exercicio
+    it('marca ambos checkboxes, depois desmarca o último',()=>{
+        cy.get('[type="checkbox"]')
+        .check()
+        .should('be.checked')
+        .last()
+        .uncheck()
+        .should('not.be.checked')
 
-  })
+    })
+    //06 - Exercicio
+    it('seleciona um arquivo da pasta fixtures',()=>{
+        cy.get('input[type="file"]')
+        .should('not.have.value')
+        .selectFile('cypress/fixtures/TesteUploadCypress.txt')
+        .should(function($input){
+            console.log($input)
+            expect($input[0].files[0].name).to.equal('TesteUploadCypress.txt')
+        })
+    })
+    //06 - Exercício extra 1
+    it('seleciona um arquivo simulando um drag-and-drop',()=>{
+        cy.get('input[type="file"]')
+        .should('not.have.value')
+        .selectFile('cypress/fixtures/TesteUploadCypress.txt', {action: "drag-drop"})
+        .should(function($input){
+            console.log($input)
+            expect($input[0].files[0].name).to.equal('TesteUploadCypress.txt')
+        })  
+    })
+    //06 - Exercício extra 2
+    it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias',()=>{
+        cy.fixture('TesteUploadCypress').as('inputFile')
+        cy.get('input[type="file"]')
+        .should('not.have.value')
+        .selectFile('@inputFile')
+        .should(function($input){
+            console.log($input)
+            expect($input[0].files[0].name).to.equal('TesteUploadCypress')
+        })  
+    })
+    //07 - Exercício
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique',()=>{
+        cy.get('#privacy > a')
+        .should('have.attr', "target")
+    })
+    //07 - Exercício extra 1
+    //Não redicionará para outra aba
+    it('acessa a página da política de privacidade removendo o target e então clicando no link',()=>{
+        cy.get('#privacy > a').invoke('removeAttr', 'target').click()
+        //cy.title('cypress-basico-v2')
+        cy.title().should('eq', 'Central de Atendimento ao Cliente TAT - Política de privacidade')
+        cy.contains('Talking About Testing').should('be.visible')
+        
+    })
+})
