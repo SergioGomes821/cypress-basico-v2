@@ -6,7 +6,7 @@ describe('Pagina politica de privacidade', function() {
     })
     it('Verifica se abriu a pagina da politica de privacidade', function() {
         cy.title()
-        .should('eq', 'Central de Atendimento ao Cliente TAT - Política de privacidade quebrou')
+        .should('eq', 'Central de Atendimento ao Cliente TAT - Política de privacidade')
         
     })
 })
