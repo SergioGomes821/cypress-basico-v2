@@ -7,6 +7,7 @@
 
 /// <reference types="Cypress" />
 
+
 describe('Central de Atendimento ao Cliente TAT', function() {
     const THREE_SECONTS_IN_MS =  3000
     beforeEach(() => {
@@ -198,6 +199,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.contains('Talking About Testing').should('be.visible')
         
     })
+    //11 - Exercício extra 2
     it('exibe e esconde as mensagens de sucesso e erro usando o .invoke()',()=>{
        cy.get('.success')
       .should('not.be.visible')
@@ -215,11 +217,26 @@ describe('Central de Atendimento ao Cliente TAT', function() {
       .should('not.be.visible')
 
     })
-
-    it.only('preenche a area de texto usando o comando invoke',()=>{
+    //11 - Exercício extra 3
+    it('preenche a area de texto usando o comando invoke',()=>{
         const LongText = Cypress._.repeat("Teste", 10)
         cy.get('#open-text-area')
         .invoke('val', LongText)
         .should('have.value', LongText)
+    })
+    //11 - Exercício extra 4
+    it('faz uma requisição HTTP status = 200, body contendo texto"CAC TAT"',()=>{
+        cy.request('https://cac-tat.s3.eu-central-1.amazonaws.com/index.html')
+        .should(function(response){
+            console.log(response)
+        })
+    })
+    it.only('Encontrar o gato e deixalo visivel',()=>{
+        cy.get('#cat').invoke('show')
+        .should('be.visible')
+        cy.get('#title')
+        .invoke('text', 'Search the cat')
+        cy.get('#subtitle')
+        .invoke('text', '👇 Encontrei o fujão')
     })
 })
