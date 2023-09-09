@@ -1,29 +1,31 @@
-# Testes automatizados com Cypress - Básico
+# CYPRESS-BASICO-V2
 
-👋 Seja bem-vindo(a)!
+This projetc `CYPRESS-BASICO-V2´ there are any basic test about CAC TAT application present in 
+src index.html.
 
-É muito bom tê-lo(a) aqui. Tenho certeza que você vai adorar este curso. ❤️
+## Pre-requirements
 
-## O que você vai aprender
+It is required to have Node.js and npm installed to run this project.
 
-Durante o curso de testes automatizados com Cypress (básico), você vai aprender:
+> I used versions `v16.13.2` and `8.1.2` of Node.js and npm, respectively.
+> **Note:**: I not recomend using last node version, because this projetc can't working, because the cypress structure changed.    
 
-- Como configurar um projeto Cypress do zero
-- Como visitar páginas locais e remotas
-- Como lidar com os elementos mais comuns encontrados em aplicações web
-- Como testar _upload_ de arquivos
-- Como realizar as mais diversas verificações de resultados esperados
-- Como criar comandos customizados
-- Como lidar com links que abrem em outra aba do navegador
-- Como rodar testes simulando as dimensões de um dispositivo móvel
-- Como resolver os mesmos problemas de diferentes formas, conhecendo a [API do Cypress](https://docs.cypress.io/api/table-of-contents)
-- Como executar os testes em um _pipeline_ de integração contínua sempre que mudanças ocorrerem no código da aplicação (ou dos testes)
-- Como criar uma documentação mínima para seu projeto de testes automatizados
+## Installation
 
-## Vamos começar?
+Run `npm install` (or `npm i` for the short version) to install the dev dependencies.
 
-Vá para a seção [estrutura do curso](./lessons/_course-structure_.md).
+## Run Tests
 
-___
+Open on browser the CAT TAT in src index.html
 
-Este é mais um curso da [**Escola Talking About Testing**](https://udemy.com/user/walmyr).
+In terminal execute one of the in package.json scripts commands.
+    Run `npm run cy:open` to open Cypress in interactive mode or 
+    `cy:open:mobile` to interactive and mobile viewport.
+    Run `npm test` (or `npm t` for the short version) to run the test in headless mode or
+    `test:mobile` to headless module and mobile viewport.
+Or, 
+
+## Support this project
+
+I recommend watch the youtube channel about cypress, (https://www.youtube.com/@TalkingAboutTesting).
+and the documentation about the cypress framework (https://docs.cypress.io/api/table-of-contents).
