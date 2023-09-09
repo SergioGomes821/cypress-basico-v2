@@ -8,6 +8,7 @@
 /// <reference types="Cypress" />
 
 describe('Central de Atendimento ao Cliente TAT', function() {
+    const THREE_SECONTS_IN_MS =  3000
     beforeEach(() => {
         // root-level hook
         // runs once before all tests
@@ -19,28 +20,25 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
     
     //02 - Exercicio extra 1
-    it('Digitando em campos e clicando em elementos', () => {
-        const LongText = "Teste teste teste teste teste teste teste testeteste teste teste teste teste teste teste "
-        cy.get('#firstName').type('Sergio')
-        cy.get('#lastName').type('Gomes')
-        cy.get('#email').type('sergio@exemplo.com')
-        //A cada espaço há um delay de 10ms, configurando o delay para 0 vai mais rápido.
-        //cy.get('#open-text-area').type(LongText)
-        cy.get('#open-text-area').type(LongText, {delay: 0})
-        cy.contains('button', 'Enviar').click()
-        cy.get('.success').should('be.visible')
-        
-    })
+    //11 - Exercicio e Extra 1
+    //usando loadash para executar 3 vezes o mesmo teste.
+    Cypress._.times(3, function(){
+
     //Exercicio extra 2
     it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida', () => {
+        cy.clock()
         cy.get('#email').type('sergio@exemplo.com')
         cy.contains('button', 'Enviar').click()
         cy.get('.error')
         .should('be.visible')
         .should('contain', 'Valide os campos obrigatórios!')
+        //Avança no tempo
+        cy.tick(THREE_SECONTS_IN_MS)
+        cy.get('.error').should('not.be.visible')
         
     })
-
+})
+    
     //Exercicio extra 3
     it('Valide campo de telefone se digitar valor não númerico, seu contaúdo deve mantér vazio.',()=>{
          
@@ -82,18 +80,26 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     })
     //Exercicio extra 6
     it('exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios',()=>{
+        cy.clock()
         cy.get('button[type="submit"]').click()
         cy.get('.error')
         .should('be.visible')
         .should('contain', 'Valide os campos obrigatórios!')  
+        //Avança no tempo
+        cy.tick(THREE_SECONTS_IN_MS)
+        cy.get('.error').should('not.be.visible')
          
     })
 
     //Exercicio extra 7
     it('envia o formuário com sucesso usando um comando customizado',()=>{
-        const longText = "Teste, Teste, Teste, Teste, teste, teste, teste, teste, teste, teste, teste, teste, "
-        cy.fillMandatoryFieldsAndSubmit("sergio", 'gomes', 'sergio@exemplo.com', longText)
+        const LongText = Cypress._.repeat("Teste", 10)
+        cy.clock()
+        cy.fillMandatoryFieldsAndSubmit("sergio", 'gomes', 'sergio@exemplo.com', LongText)
         cy.get('.success').should('contain', 'Mensagem enviada com sucesso.')
+        //Avança no tempo
+        cy.tick(THREE_SECONTS_IN_MS)
+        cy.get('.success').should('not.be.visible')
         
     })
     //03 - Exercicio
@@ -191,5 +197,29 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.title().should('eq', 'Central de Atendimento ao Cliente TAT - Política de privacidade')
         cy.contains('Talking About Testing').should('be.visible')
         
+    })
+    it('exibe e esconde as mensagens de sucesso e erro usando o .invoke()',()=>{
+       cy.get('.success')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Mensagem enviada com sucesso.')
+      .invoke('hide')
+      .should('not.be.visible')
+    cy.get('.error')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Valide os campos obrigatórios!')
+      .invoke('hide')
+      .should('not.be.visible')
+
+    })
+
+    it.only('preenche a area de texto usando o comando invoke',()=>{
+        const LongText = Cypress._.repeat("Teste", 10)
+        cy.get('#open-text-area')
+        .invoke('val', LongText)
+        .should('have.value', LongText)
     })
 })
